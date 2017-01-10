@@ -13,12 +13,14 @@ import org.w3c.dom.Text;
 public class MainActivity extends AppCompatActivity {
 
     private final static String ACTION = "ACTION_UPDATE";
+    private final static String EXTRA = "EXTRA";
+
     private static Integer counter = 0;
     private BroadcastReceiver _refreshReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String text = intent.getExtras().getString("yonah");
-            ( (TextView) findViewById( R.id.showBroadcast ) ).setText(counter.toString() + ": " + text + intent.toString());
+            String text = intent.getExtras().getString(EXTRA);
+            ( (TextView) findViewById( R.id.showBroadcast ) ).setText(counter.toString() + ": " + text);
             counter++;
         }
     };

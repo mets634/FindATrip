@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO:When action button clicked, update the database!!!
                 Snackbar.make(view, "Information has been updated successfully", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }

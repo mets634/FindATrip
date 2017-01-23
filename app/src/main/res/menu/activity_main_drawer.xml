@@ -4,19 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_mainFragment"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_launcher"
             android:title="Main" />
         <item
             android:id="@+id/nav_businesses"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@android:drawable/ic_dialog_map"
             android:title="Businesses" />
         <item
             android:id="@+id/nav_trips"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@android:drawable/ic_menu_myplaces"
             android:title="Trips" />
         <item
             android:id="@+id/nav_exit"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@android:drawable/ic_menu_close_clear_cancel"
             android:title="Exit" />
     </group>
 

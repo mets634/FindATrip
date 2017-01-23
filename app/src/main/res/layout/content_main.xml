@@ -13,4 +13,9 @@
     tools:context="com.example.erel_yonah.findatrip.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
 </RelativeLayout>

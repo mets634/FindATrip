@@ -157,9 +157,6 @@ public final class TravelAgenciesContract {
             if (agencies == null || agencies.getCount() == 0)
                 return new ArrayList<>();
 
-            if (!agencies.getColumnNames().equals(COLUMNS)) // incorrect cursor
-                throw new IllegalArgumentException("Cursor Must Contain a Result of Agencies");
-
             ArrayList<Agency> res = new ArrayList<>();
 
             agencies.moveToFirst();
@@ -269,9 +266,6 @@ public final class TravelAgenciesContract {
         public static ArrayList<Trip> cursorToList(Cursor trips) throws Exception {
             if (trips == null || trips.getCount() == 0)
                 return new ArrayList<>();
-
-            if (!trips.getColumnNames().equals(COLUMNS)) // incorrect cursor
-                throw new IllegalArgumentException("Cursor Must Contain a Result of Trips");
 
             ArrayList<Trip> res = new ArrayList<>();
 

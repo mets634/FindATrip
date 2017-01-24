@@ -8,6 +8,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 
 import com.example.erel_yonah.findatrip.model.datasource.ListDS;
 import com.example.erel_yonah.findatrip.model.datasource.TravelAgenciesContract;
@@ -21,6 +23,7 @@ import com.example.erel_yonah.findatrip.model.datasource.TravelAgenciesContract.
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.concurrent.Executors;
 
 /**
  * A class implementing the data
@@ -46,21 +49,13 @@ public class ListDSManager implements DSManager {
     public void update(Context c) throws Exception {
         // get data from content provider
 
-        // get agencies
-        Cursor res1 = c.getContentResolver().query(
-                TravelAgenciesContract.AgencyEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
+        Cursor res1 = runAsyncTask(
+                new CPAsyncTask(c, AgencyEntry.CONTENT_URI)
+        );
 
-        // get trips
-        Cursor res2 = c.getContentResolver().query(
-                TravelAgenciesContract.AgencyEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
+        Cursor res2 = runAsyncTask(
+                new CPAsyncTask(c, TripEntry.CONTENT_URI)
+        );
 
         // convert cursors to lists
         ArrayList<Agency> agencies = TravelAgenciesContract.AgencyEntry.cursorToList(res1);
@@ -68,5 +63,63 @@ public class ListDSManager implements DSManager {
 
         // commit update
         ListDS.update(agencies, trips);
+    }
+
+    /**
+     * A method to run the asynctask
+     * and when finished to return result.
+     * @param cp The asynctask
+     * @return Cursor containing result.
+     */
+    private static Cursor runAsyncTask(CPAsyncTask cp) {
+        cp.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        while (!cp.isSet); // not ready ... keep waiting
+        return cp.getResult();
+    }
+
+    /**
+     * A class to access content provider with asynctask.
+     */
+    class CPAsyncTask extends AsyncTask<Void, Void, Void> {
+        public CPAsyncTask(Context c, Uri url) {
+            this.c = c;
+            this.url = url;
+
+            isSet = false;
+        }
+
+        // data used in asynctask
+        private Uri url;
+        private Context c;
+
+        // results
+        private Cursor res;
+        private boolean isSet;
+
+        public Cursor getResult() {
+            return res;
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // get data
+            try {
+                res = c.getContentResolver().acquireContentProviderClient(url).query(
+                        url,
+                        null,
+                        null,
+                        null,
+                        null);
+            }
+            catch (Exception e) {
+
+            }
+            finally {
+                isSet = true;
+            }
+            return null;
+        }
     }
 }

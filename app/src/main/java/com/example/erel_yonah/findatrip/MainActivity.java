@@ -1,6 +1,7 @@
 package com.example.erel_yonah.findatrip;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,11 +18,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
+import com.example.erel_yonah.findatrip.model.entities.Agency;
 
 import static java.lang.System.exit;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AgencyFragment.OnListFragmentInteractionListener {
+
     public FragmentManager fragmentManager;
 
     @Override
@@ -32,6 +38,8 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.fragment_container,new MainFragment()).commit();
 
+        initializeDB();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -39,8 +47,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO:When action button clicked, update the database!!!
-                Snackbar.make(view, "Information has been updated successfully", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "You're very handsome", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -120,5 +127,29 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onListFragmentInteraction(Agency agency) {
+        //DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        //String message = Float.toString(metrics.density);
+
+        Toast toast = Toast.makeText(this, agency.getName(), Toast.LENGTH_SHORT);
+        toast.show();
+
+        /*Intent intent = new Intent(this,DeviceBTCardActivity.class);
+        intent.putExtra("DEVICE_NAME", item.name);
+        intent.putExtra("DEVICE_ADDRESS",item.address);
+        startActivity(intent);*/
+    }
+
+    protected void initializeDB() {
+        try {
+            DSManagerFactory.getDSManager("List").update(this);
+        }
+        catch (Exception e) {
+            Toast toast = Toast.makeText(this, "Can't load data from service", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

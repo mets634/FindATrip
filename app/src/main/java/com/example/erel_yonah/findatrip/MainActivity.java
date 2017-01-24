@@ -28,21 +28,24 @@ import static java.lang.System.exit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AgencyFragment.OnListFragmentInteractionListener {
 
-    public FragmentManager fragmentManager;
+    public FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragmentManager = getSupportFragmentManager();
+        //open main fragment
         fragmentManager.beginTransaction().add(R.id.fragment_container,new MainFragment()).commit();
 
+        //init database
         initializeDB();
 
+        //hold the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //set floating button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,12 +55,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+       //set components in the toolbar
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        //set the navigation bar
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -65,12 +70,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
+        if (drawer.isDrawerOpen(GravityCompat.START)) {  //if drawer is open
+            drawer.closeDrawer(GravityCompat.START); //close navigation bar
+        } else if (fragmentManager.getBackStackEntryCount() > 0) { //if it's not the last fragment
+            fragmentManager.popBackStack(); //go back to the last fragment
         } else {
-            super.onBackPressed();
+            super.onBackPressed(); //go back normally
         }
     }
 
@@ -148,7 +153,7 @@ public class MainActivity extends AppCompatActivity
             DSManagerFactory.getDSManager("List").update(this);
         }
         catch (Exception e) {
-            Toast toast = Toast.makeText(this, "Can't load data from service", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "can't load data", Toast.LENGTH_SHORT);
             toast.show();
         }
     }

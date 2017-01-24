@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_mainFragment) {
             fragment = new MainFragment();
         } else if (id == R.id.nav_businesses) {
-            fragment = new AgencyFragment();
+            fragment = new MainFragment();
         } else if (id == R.id.nav_trips) {
 
         } else if (id == R.id.nav_exit) {
@@ -171,10 +171,14 @@ public class MainActivity extends AppCompatActivity
         Toast toast = Toast.makeText(this, agency.getName(), Toast.LENGTH_SHORT);
         toast.show();
 
-        /*Intent intent = new Intent(this,DeviceBTCardActivity.class);
-        intent.putExtra("DEVICE_NAME", item.name);
-        intent.putExtra("DEVICE_ADDRESS",item.address);
-        startActivity(intent);*/
+        Intent intent = new Intent(this,AgencyActivity.class);
+        intent.putExtra("AGENCY_NAME", agency.getName());
+        intent.putExtra("AGENCY_ADDRESS",agency.getAddress().toString());
+        intent.putExtra("AGENCY_EMAIL", agency.getEmail());
+        intent.putExtra("AGENCY_PHONENUMBER", agency.getPhoneNumber());
+        intent.putExtra("AGENCY_WEBSITE", agency.getWebsite());
+        intent.putExtra("AGENCY_ID", agency.getID());
+        startActivity(intent);
     }
 
     protected void updateDB() {

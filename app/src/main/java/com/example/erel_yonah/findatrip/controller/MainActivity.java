@@ -91,15 +91,18 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
 
+        //close the broadcast reciever
         unregisterReceiver(_refreshReceiver);
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {  //if drawer is open
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            //if drawer is open
             drawer.closeDrawer(GravityCompat.START); //close navigation bar
-        } else if (fragmentManager.getBackStackEntryCount() > 0) { //if it's not the last fragment
+        } else if (fragmentManager.getBackStackEntryCount() > 0) {
+            //if it's not the last fragment
             fragmentManager.popBackStack(); //go back to the last fragment
         } else {
             super.onBackPressed(); //go back normally

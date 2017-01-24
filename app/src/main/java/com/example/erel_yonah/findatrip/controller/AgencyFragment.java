@@ -1,4 +1,4 @@
-package com.example.erel_yonah.findatrip;
+package com.example.erel_yonah.findatrip.controller;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,11 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.erel_yonah.findatrip.R;
 import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
-import com.example.erel_yonah.findatrip.model.backend.ListDSManager;
 import com.example.erel_yonah.findatrip.model.entities.Agency;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

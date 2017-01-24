@@ -1,4 +1,4 @@
-package com.example.erel_yonah.findatrip;
+package com.example.erel_yonah.findatrip.controller;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.erel_yonah.findatrip.R;
 
 public class ReceiverActivity extends AppCompatActivity {
 

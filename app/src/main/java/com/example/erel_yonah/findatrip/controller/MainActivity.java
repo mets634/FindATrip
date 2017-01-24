@@ -1,11 +1,17 @@
 package com.example.erel_yonah.findatrip.controller;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +33,19 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AgencyFragment.OnListFragmentInteractionListener {
 
     public FragmentManager fragmentManager = getSupportFragmentManager();
+    private final static String ACTION = "ACTION_UPDATE";
+    //private final static String EXTRA = "EXTRA";
+
+    //private static Integer counter = 0;
+    private BroadcastReceiver _refreshReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            /*String text = intent.getExtras().getString(EXTRA);
+            ( (TextView) findViewById( R.id.showBroadcast ) ).setText(counter.toString() + ": " + text);
+            counter++;*/
+            updateDB();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +56,10 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().add(R.id.fragment_container,new MainFragment()).commit();
 
         //init database
-        initializeDB();
+        updateDB();
+
+        //register service
+        registerReceiver(_refreshReceiver, new IntentFilter(ACTION));
 
         //hold the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -63,6 +85,13 @@ public class MainActivity extends AppCompatActivity
         //set the navigation bar
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(_refreshReceiver);
     }
 
     @Override
@@ -109,17 +138,16 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_mainFragment) {
             fragment = new MainFragment();
-            setTitle("Find Your Trip!");
         } else if (id == R.id.nav_businesses) {
-            setTitle("Businesses");
+            fragment = new AgencyFragment();
         } else if (id == R.id.nav_trips) {
-            setTitle("Trips");
+
         } else if (id == R.id.nav_exit) {
-            exit(0);
+            exitApplication();
         } else if (id == R.id.nav_share) {
-            setTitle("Share");
+
         } else if (id == R.id.nav_send) {
-            setTitle("Send");
+
         }
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -146,7 +174,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);*/
     }
 
-    protected void initializeDB() {
+    protected void updateDB() {
         try {
             DSManagerFactory.getDSManager("List").update(this);
         }
@@ -154,5 +182,22 @@ public class MainActivity extends AppCompatActivity
             Toast toast = Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    protected void exitApplication() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Exit Application")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

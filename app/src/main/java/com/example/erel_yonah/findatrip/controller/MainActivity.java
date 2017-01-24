@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
             DSManagerFactory.getDSManager("List").update(this);
         }
         catch (Exception e) {
-            Toast toast = Toast.makeText(this, "can't load data", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT);
             toast.show();
         }
     }

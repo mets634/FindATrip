@@ -27,6 +27,8 @@ import com.example.erel_yonah.findatrip.R;
 import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
 import com.example.erel_yonah.findatrip.model.entities.Agency;
 
+import java.util.Random;
+
 import static java.lang.System.exit;
 
 public class MainActivity extends AppCompatActivity
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "You're very handsome", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, generateSentence(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_mainFragment) {
             fragment = new MainFragment();
         } else if (id == R.id.nav_businesses) {
-            fragment = new MainFragment();
+            fragment = new AgencyFragment();
         } else if (id == R.id.nav_trips) {
 
         } else if (id == R.id.nav_exit) {
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("AGENCY_PHONENUMBER", agency.getPhoneNumber());
         intent.putExtra("AGENCY_WEBSITE", agency.getWebsite());
         intent.putExtra("AGENCY_ID", agency.getID());
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     protected void updateDB() {
@@ -206,5 +208,11 @@ public class MainActivity extends AppCompatActivity
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    protected String generateSentence() {
+        Random rand = new Random();
+        String[] strings = {"You're very handsome today!", "You're my favorite user", "I love you so much...", "You're a lizard, Harry.", "Have a nice trip!", "Make America great again!", "Choose your trip carefully...", "Always remember you're unique, just like everyone else.",};
+        return strings[rand.nextInt(strings.length)];
     }
 }

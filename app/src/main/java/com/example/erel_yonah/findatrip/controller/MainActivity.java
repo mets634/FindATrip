@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AgencyFragment.OnListFragmentInteractionListener {
 
     public FragmentManager fragmentManager = getSupportFragmentManager();
+    public Menu menu;
     private final static String ACTION = "ACTION_UPDATE";
     //private final static String EXTRA = "EXTRA";
 
@@ -115,6 +117,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        //catch the search view
+        this.menu = menu;
+
         return true;
     }
 
@@ -144,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_mainFragment) {
             fragment = new MainFragment();
         } else if (id == R.id.nav_businesses) {
-            fragment = new AgencyFragment();
+            fragment = AgencyFragment.newInstance(1);
         } else if (id == R.id.nav_trips) {
 
         } else if (id == R.id.nav_exit) {
@@ -154,6 +160,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
+
+        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        if (fragment instanceof AgencyFragment) ((AgencyFragment) fragment).setSearchView(search);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container,fragment);

@@ -6,17 +6,22 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.ListView;
 
 import com.example.erel_yonah.findatrip.R;
 import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
 import com.example.erel_yonah.findatrip.model.entities.Agency;
+
+import static com.example.erel_yonah.findatrip.R.menu.main;
 
 /**
  * A fragment representing a list of Items.
@@ -26,11 +31,14 @@ import com.example.erel_yonah.findatrip.model.entities.Agency;
  */
 public class AgencyFragment extends Fragment {
 
+    private SearchView searchView;
+
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private MyAgencyRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -38,6 +46,8 @@ public class AgencyFragment extends Fragment {
      */
     public AgencyFragment() {
     }
+
+    public void setSearchView (SearchView sv) {searchView = sv;}
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
@@ -97,10 +107,41 @@ public class AgencyFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+
         getActivity().setTitle("Businesses");
+
+        //doing a down cast to the view and the adapter of the view to MyAgencyRecyclerViewAdapter and saves it.
+        if (getView() instanceof RecyclerView) {
+            if (((RecyclerView) getView()).getAdapter() instanceof MyAgencyRecyclerViewAdapter) {
+                adapter = (MyAgencyRecyclerViewAdapter) ((((RecyclerView) getView()).getAdapter()));
+
+                //listeners for the search view that preforms filtering
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        adapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+
+                searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                    @Override
+                    public boolean onClose() {
+                        adapter.getFilter().filter(null);
+                        return false;
+                    }
+                });
+            }
+        }
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.erel_yonah.findatrip.controller.AgencyFragment.OnListFragmentInteractionListener;
@@ -23,12 +24,18 @@ import java.util.List;
  */
 public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRecyclerViewAdapter.ViewHolder> implements Filterable {
 
-    private final List<Agency> mValues;
+    //all items in the list that should be displayed
+    private final ArrayList<Agency> mValues;
+
+    //the items that are really showed, after filtering
+    private ArrayList<Agency> dValues;
+
     private final OnListFragmentInteractionListener mListener;
 
-    public MyAgencyRecyclerViewAdapter(List<Agency> items, OnListFragmentInteractionListener listener) {
+    public MyAgencyRecyclerViewAdapter(ArrayList<Agency> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        dValues = mValues;
     }
 
     @Override
@@ -40,7 +47,7 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+        holder.mItem = dValues.get(position);
         holder.mIdView.setText(holder.mItem.getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +64,7 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return dValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,9 +93,8 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (constraint.length() != 0) {
-                    notifyDataSetChanged();
-                }
+                dValues = (ArrayList<Agency>) results.values;
+                notifyDataSetChanged();
             }
 
 

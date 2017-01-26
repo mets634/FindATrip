@@ -1,6 +1,7 @@
 package com.example.erel_yonah.findatrip.controller;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     public FragmentManager fragmentManager = getSupportFragmentManager();
     public Menu menu;
+    protected Intent serviceIntent;
     private final static String ACTION = "ACTION_UPDATE";
     //private final static String EXTRA = "EXTRA";
 
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity
 
         //init database
         updateDB();
+
+        //start service
+        serviceIntent = activateService();
 
         //register service
         registerReceiver(_refreshReceiver, new IntentFilter(ACTION));
@@ -97,6 +102,9 @@ public class MainActivity extends AppCompatActivity
 
         //close the broadcast reciever
         unregisterReceiver(_refreshReceiver);
+
+        //stop service
+        stopService(serviceIntent);
     }
 
     @Override
@@ -195,6 +203,14 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("AGENCY_WEBSITE", agency.getWebsite());
         intent.putExtra("AGENCY_ID", agency.getID());
         //startActivity(intent);
+    }
+
+    protected Intent activateService() {
+        ComponentName componentName = new ComponentName("com.example.java5777.travelagencies",".model.Service.CheckUpdatesService");
+        Intent intent = new Intent();
+        intent.setComponent(componentName);
+        startService(intent);
+        return intent;
     }
 
     protected void updateDB() {

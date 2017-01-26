@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_businesses) {
             fragment = AgencyFragment.newInstance(1);
         } else if (id == R.id.nav_trips) {
-
+            fragment = new TripFragment();
         } else if (id == R.id.nav_exit) {
             exitApplication();
         } else if (id == R.id.nav_share) {
@@ -161,14 +162,18 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+        //send search view to fragment in order to preform filtering
         SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         if (fragment instanceof AgencyFragment) ((AgencyFragment) fragment).setSearchView(search);
+        if (fragment instanceof TripFragment) ((TripFragment) fragment).setSearchView(search);
 
+        //switch fragment content
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container,fragment);
         transaction.addToBackStack(null);
         transaction.commit();
 
+        //close navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

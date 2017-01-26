@@ -43,6 +43,7 @@ public class Trip {
                 ", description='" + description + '\'' +
                 ", agencyID='" + agencyID + '\'' +
                 '}';
+
     }
 
 

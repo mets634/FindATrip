@@ -192,8 +192,8 @@ public class MainActivity extends AppCompatActivity
 
         //String message = Float.toString(metrics.density);
 
-        Toast toast = Toast.makeText(this, agency.getName(), Toast.LENGTH_SHORT);
-        toast.show();
+        //Toast toast = Toast.makeText(this, agency.getName() + "   " + agency.getPhoneNumber(), Toast.LENGTH_SHORT);
+        //toast.show();
 
         Intent intent = new Intent(this,AgencyActivity.class);
         intent.putExtra("AGENCY_NAME", agency.getName());
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("AGENCY_PHONENUMBER", agency.getPhoneNumber());
         intent.putExtra("AGENCY_WEBSITE", agency.getWebsite());
         intent.putExtra("AGENCY_ID", agency.getID());
-        //startActivity(intent);
+        startActivity(intent);
     }
 
     protected Intent activateService() {

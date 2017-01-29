@@ -21,6 +21,7 @@ import com.example.erel_yonah.findatrip.R;
 import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
 import com.example.erel_yonah.findatrip.model.entities.Agency;
 
+import static android.support.v7.recyclerview.R.attr.layoutManager;
 import static com.example.erel_yonah.findatrip.R.menu.main;
 
 /**

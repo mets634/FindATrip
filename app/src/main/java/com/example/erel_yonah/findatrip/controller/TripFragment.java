@@ -19,6 +19,7 @@ import com.example.erel_yonah.findatrip.R;
 import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
 import com.example.erel_yonah.findatrip.model.entities.Trip;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,12 +30,10 @@ public class TripFragment extends Fragment {
     View rootView;
     ExpandableListView lv;
     private String[] groups;
-    private String[] showedGroups;
     private ArrayList<Trip>[] _children;
     private ArrayList<Trip> allTrips;
     public SearchView searchView;
     private ExpandableListAdapter adapter;
-
 
     public TripFragment() {
     }
@@ -53,7 +52,6 @@ public class TripFragment extends Fragment {
 
         groups = new String[_groups.size()];
         groups = _groups.toArray(groups);
-        showedGroups = groups;
 
         _children = (ArrayList<Trip>[]) new ArrayList[groups.length];
         for(int i = 0; i < groups.length; i++)
@@ -80,7 +78,7 @@ public class TripFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         lv = (ExpandableListView) view.findViewById(R.id.expListView);
-        lv.setAdapter(new ExpandableListAdapter(showedGroups, _children));
+        lv.setAdapter(new ExpandableListAdapter(groups, _children));
         lv.setGroupIndicator(null);
 
         if (lv.getAdapter() instanceof ExpandableListAdapter) {
@@ -113,12 +111,14 @@ public class TripFragment extends Fragment {
 
         private final LayoutInflater inf;
         private String[] groups;
+        private String[] originalGroups;
         private ArrayList<Trip>[] children;
 
         public ExpandableListAdapter(String[] groups, ArrayList<Trip>[] children) {
             this.groups = groups;
             this.children = children;
             inf = LayoutInflater.from(getActivity());
+            originalGroups = groups;
         }
 
         @Override
@@ -159,18 +159,22 @@ public class TripFragment extends Fragment {
         @Override
         public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-            ViewHolder holder;
+            ChildViewHolder holder;
             if (convertView == null) {
                 convertView = inf.inflate(R.layout.fragment_trip_item, parent, false);
-                holder = new ViewHolder();
+                holder = new ChildViewHolder(convertView);
 
-                holder.text = (TextView) convertView.findViewById(R.id.lblListItem);
                 convertView.setTag(holder);
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = (ChildViewHolder) convertView.getTag();
             }
 
-            holder.text.setText(getChild(groupPosition, childPosition).toString());
+            if (getChild(groupPosition, childPosition) instanceof Trip) holder.mItem = (Trip) getChild(groupPosition, childPosition);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            holder.mBusinessIdView.setText(Long.toString(holder.mItem.getAgencyID()));
+            holder.mStartView.setText(dateFormat.format(holder.mItem.getStart().getTime()));
+            holder.mEndView.setText(dateFormat.format(holder.mItem.getEnd().getTime()));
+            holder.mDescriptionView.setText(holder.mItem.getDescription());
 
             return convertView;
         }
@@ -206,7 +210,7 @@ public class TripFragment extends Fragment {
                 @SuppressWarnings("unchecked")
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
-                    showedGroups = (String[]) results.values;
+                    groups = (String[]) results.values;
                     notifyDataSetChanged();
                 }
 
@@ -220,12 +224,12 @@ public class TripFragment extends Fragment {
                     // perform your search here using the searchConstraint String.
 
                     if (constraint == null || constraint.length() == 0) {
-                        results.count = groups.length;
-                        results.values = groups;
+                        results.count = originalGroups.length;
+                        results.values = originalGroups;
                     } else {
                         String cs = constraint.toString().toLowerCase();
-                        for (int i = 0; i < showedGroups.length; i++) {
-                            String tmp = showedGroups[i];
+                        for (int i = 0; i < originalGroups.length; i++) {
+                            String tmp = originalGroups[i];
                             if (tmp.toLowerCase().startsWith(cs))  {
                                 FilteredArray.add(tmp);
                             }
@@ -240,6 +244,28 @@ public class TripFragment extends Fragment {
             };
 
             return filter;
+        }
+
+        private class ChildViewHolder {
+            public final View mView;
+            public final TextView mBusinessIdView;
+            public final TextView mStartView;
+            public final TextView mEndView;
+            public final TextView mDescriptionView;
+            public Trip mItem;
+
+            public ChildViewHolder(View view) {
+                mView = view;
+                mStartView = (TextView) view.findViewById(R.id.start);
+                mBusinessIdView = (TextView) view.findViewById(R.id.busiid);
+                mEndView = (TextView) view.findViewById(R.id.end);
+                mDescriptionView = (TextView) view.findViewById(R.id.desc);
+            }
+
+            @Override
+            public String toString() {
+                return super.toString() + " '" + mBusinessIdView.getText() + "'";
+            }
         }
 
         private class ViewHolder {

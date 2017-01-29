@@ -48,7 +48,10 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = dValues.get(position);
-        holder.mIdView.setText(holder.mItem.getName());
+        holder.mIdView.setText(Long.toString(holder.mItem.getID()));
+        holder.mNameView.setText(holder.mItem.getName());
+        holder.mAddressView.setText(holder.mItem.getAddress().getAddress());
+        holder.mEmailView.setText(holder.mItem.getEmail());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,19 +73,23 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mNameView;
+        public final TextView mAddressView;
+        public final TextView mEmailView;
         public Agency mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mNameView = (TextView) view.findViewById(R.id.name);
             mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mAddressView = (TextView) view.findViewById(R.id.address);
+            mEmailView = (TextView) view.findViewById(R.id.email);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mNameView.getText() + "'";
         }
     }
 

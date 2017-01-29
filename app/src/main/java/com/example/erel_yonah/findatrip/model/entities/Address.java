@@ -32,6 +32,10 @@ public class Address {
                 '}';
     }
 
+    public String getAddress() {
+        return street + ", " + city + ", " + country;
+    }
+
     public final String country;
     public final String city;
     public final String street;

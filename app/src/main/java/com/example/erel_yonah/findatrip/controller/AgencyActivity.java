@@ -30,6 +30,8 @@ public class AgencyActivity extends AppCompatActivity {
     String website;
     Long businessId;
 
+    final String WEB_URL = "website";
+
     TextView emailText;
     TextView websiteText;
     TextView phoneNumberText;
@@ -107,7 +109,10 @@ public class AgencyActivity extends AppCompatActivity {
     }
 
     private void openWebAddress() {
-        Toast.makeText(getApplication(), "Will be implemented shortly", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Will be implemented shortly", Toast.LENGTH_SHORT).show();
+        /*Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(WEB_URL, website);
+        startActivity(intent);*/
     }
 
     private void openNavigationApp() {

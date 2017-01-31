@@ -85,13 +85,10 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/trips_photo"
+                    android:layout_height="258dp"
                     android:id="@+id/imageView"
                     android:cropToPadding="false"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    app:srcCompat="@drawable/trips_photo" />
 
             </RelativeLayout>
 

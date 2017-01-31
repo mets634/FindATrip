@@ -34,6 +34,7 @@ public class TripFragment extends Fragment {
     private ArrayList<Trip> allTrips;
     public SearchView searchView;
     private ExpandableListAdapter adapter;
+    public OnListFragmentInteractionListener mListener;
 
     public TripFragment() {
     }
@@ -42,6 +43,9 @@ public class TripFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getActivity().setTitle("Trips");
+        if(getActivity() instanceof OnListFragmentInteractionListener) mListener = (OnListFragmentInteractionListener) getActivity();
 
        allTrips = DSManagerFactory.getDSManager("List").getTrips();
 
@@ -159,7 +163,7 @@ public class TripFragment extends Fragment {
         @Override
         public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-            ChildViewHolder holder;
+            final ChildViewHolder holder;
             if (convertView == null) {
                 convertView = inf.inflate(R.layout.fragment_trip_item, parent, false);
                 holder = new ChildViewHolder(convertView);
@@ -175,6 +179,17 @@ public class TripFragment extends Fragment {
             holder.mStartView.setText(dateFormat.format(holder.mItem.getStart().getTime()));
             holder.mEndView.setText(dateFormat.format(holder.mItem.getEnd().getTime()));
             holder.mDescriptionView.setText(holder.mItem.getDescription());
+
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onListFragmentInteraction(holder.mItem);
+                    }
+                }
+            });
 
             return convertView;
         }
@@ -271,6 +286,10 @@ public class TripFragment extends Fragment {
         private class ViewHolder {
             TextView text;
         }
+    }
+
+    public interface OnListFragmentInteractionListener {
+        void onListFragmentInteraction(Trip trip);
     }
 
     public ArrayList<String> deleteDuplicates(ArrayList<String> strs) {

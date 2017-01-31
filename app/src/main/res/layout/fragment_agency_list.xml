@@ -10,4 +10,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.erel_yonah.findatrip.controller.AgencyFragment"
-    tools:listitem="@layout/fragment_agency" />
+    tools:listitem="@layout/fragment_agency"/>
+

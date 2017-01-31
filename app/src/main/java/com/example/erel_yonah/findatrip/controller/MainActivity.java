@@ -28,13 +28,16 @@ import android.widget.Toast;
 import com.example.erel_yonah.findatrip.R;
 import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
 import com.example.erel_yonah.findatrip.model.entities.Agency;
+import com.example.erel_yonah.findatrip.model.entities.Trip;
 
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import static java.lang.System.exit;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AgencyFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        AgencyFragment.OnListFragmentInteractionListener, TripFragment.OnListFragmentInteractionListener {
 
     public FragmentManager fragmentManager = getSupportFragmentManager();
     public Menu menu;
@@ -188,20 +191,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onListFragmentInteraction(Agency agency) {
-        //DisplayMetrics metrics = getResources().getDisplayMetrics();
-
-        //String message = Float.toString(metrics.density);
-
         //Toast toast = Toast.makeText(this, agency.getName() + "   " + agency.getPhoneNumber(), Toast.LENGTH_SHORT);
         //toast.show();
 
         Intent intent = new Intent(this,AgencyActivity.class);
         intent.putExtra("AGENCY_NAME", agency.getName());
-        intent.putExtra("AGENCY_ADDRESS",agency.getAddress().toString());
+        intent.putExtra("AGENCY_ADDRESS",agency.getAddress().getAddress());
         intent.putExtra("AGENCY_EMAIL", agency.getEmail());
         intent.putExtra("AGENCY_PHONENUMBER", agency.getPhoneNumber());
         intent.putExtra("AGENCY_WEBSITE", agency.getWebsite());
         intent.putExtra("AGENCY_ID", agency.getID());
+        startActivity(intent);
+    }
+
+    public void onListFragmentInteraction(Trip trip) {
+        //Toast toast = Toast.makeText(this, agency.getName() + "   " + agency.getPhoneNumber(), Toast.LENGTH_SHORT);
+        //toast.show();
+
+        Intent intent = new Intent(this,TripActivity.class);
+        intent.putExtra("TRIP_AGENCY_ID", trip.getAgencyID());
+        intent.putExtra("TRIP_COUNTRY",trip.getCountry());
+        intent.putExtra("TRIP_DESCRIPTION", trip.getDescription());
+        intent.putExtra("TRIP_PRICE", trip.getPrice());
+        intent.putExtra("TRIP_START", trip.getStart());
+        intent.putExtra("TRIP_END", trip.getEnd());
         startActivity(intent);
     }
 

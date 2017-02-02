@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.erel_yonah.findatrip.R;
@@ -132,6 +134,34 @@ public class MainActivity extends AppCompatActivity
         //catch the search view
         this.menu = menu;
 
+        //determine what happens when search view is opened or closed
+        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                Fragment curfFrag = fragmentManager.findFragmentById(R.id.fragment_container);
+                if (curfFrag instanceof MainFragment) {
+                    TripFragment fragment = new TripFragment();
+                    SearchView search = (SearchView) item.getActionView();
+                    fragment.setSearchView(search);
+
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.fragment_container,fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                } else {
+                    fragmentManager.beginTransaction().addToBackStack(null).commit();
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                fragmentManager.popBackStack();
+                return true;
+            }
+        });
+
         return true;
     }
 
@@ -143,18 +173,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-            TripFragment fragment = new TripFragment();
-            SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-            fragment.setSearchView(search);
-
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.fragment_container,fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        } else if (id == R.id.home) {
-            fragmentManager.beginTransaction().replace(R.id.fragment_container,new MainFragment()).commit();
-        }
 
         return super.onOptionsItemSelected(item);
     }

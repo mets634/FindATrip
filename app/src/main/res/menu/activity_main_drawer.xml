@@ -20,16 +20,16 @@
             android:title="Exit" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="About Us">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/erel"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Erel" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/yonah"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Yonah" />
         </menu>
     </item>
 

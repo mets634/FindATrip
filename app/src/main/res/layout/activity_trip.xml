@@ -21,22 +21,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.design.widget.FloatingActionButton
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    app:fabSize="normal"
-                    app:srcCompat="@android:drawable/ic_dialog_map"
-                    android:id="@+id/navButton"
-                    android:layout_marginRight="31dp"
-                    android:layout_marginEnd="31dp"
-                    android:layout_marginBottom="41dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_height="258dp"
+                    android:id="@+id/imageView"
+                    android:cropToPadding="false"
+                    app:srcCompat="@drawable/trips_photo" />
 
                 <TextView
-                    android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -45,7 +37,7 @@
                     android:layout_marginLeft="53dp"
                     android:layout_marginStart="53dp"
                     android:layout_marginTop="55dp"
-                    android:id="@+id/name"
+                    android:id="@+id/country"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textStyle="bold"
                     android:textSize="40dp"
@@ -56,8 +48,8 @@
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/name"
-                    android:layout_alignStart="@+id/name"
+                    android:layout_alignLeft="@+id/country"
+                    android:layout_alignStart="@+id/country"
                     android:layout_centerVertical="true"
                     android:layout_weight="1">
 
@@ -65,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:text="ID: "
+                        android:text="Agency: "
                         android:textStyle="bold"
                         android:textColor="@color/colorPrimary"
                         android:background="@android:color/background_light"
@@ -83,12 +75,20 @@
                         android:layout_gravity="center_horizontal"/>
                 </LinearLayout>
 
-                <ImageView
+                <android.support.design.widget.FloatingActionButton
                     android:layout_width="wrap_content"
-                    android:layout_height="258dp"
-                    android:id="@+id/imageView"
-                    android:cropToPadding="false"
-                    app:srcCompat="@drawable/trips_photo" />
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:fabSize="normal"
+                    app:srcCompat="@drawable/business_icon"
+                    android:id="@+id/gotoBusiness"
+                    app:backgroundTint="@android:color/holo_blue_bright"
+                    android:layout_marginRight="31dp"
+                    android:layout_marginEnd="31dp"
+                    android:layout_marginBottom="41dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
 
@@ -115,11 +115,11 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:textSize="20dp"
-                            android:text="E-Mail: "
+                            android:text="Starts: "
                             android:layout_gravity="left"/>
 
                         <TextView
-                            android:id="@+id/email"
+                            android:id="@+id/start"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -142,11 +142,11 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:textSize="20dp"
-                            android:text="Phone Number: "
+                            android:text="Ends: "
                             android:layout_gravity="left"/>
 
                         <TextView
-                            android:id="@+id/phonenumber"
+                            android:id="@+id/end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -169,11 +169,11 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:textSize="20dp"
-                            android:text="Website: "
+                            android:text="Price: "
                             android:layout_gravity="left"/>
 
                         <TextView
-                            android:id="@+id/website"
+                            android:id="@+id/price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -196,11 +196,11 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:textSize="20dp"
-                            android:text="Address: "
+                            android:text="Description: "
                             android:layout_gravity="left"/>
 
                         <TextView
-                            android:id="@+id/address"
+                            android:id="@+id/desc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"

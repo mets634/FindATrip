@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -100,6 +101,10 @@ public class AgencyActivity extends AppCompatActivity {
                 openNavigationApp();
             }
         });
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void dialPhoneNumber() {
@@ -109,10 +114,10 @@ public class AgencyActivity extends AppCompatActivity {
     }
 
     private void openWebAddress() {
-        Toast.makeText(this, "Will be implemented shortly", Toast.LENGTH_SHORT).show();
-        /*Intent intent = new Intent(this, WebViewActivity.class);
+        //Toast.makeText(this, "Will be implemented shortly", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WEB_URL, website);
-        startActivity(intent);*/
+        startActivity(intent);
     }
 
     private void openNavigationApp() {
@@ -128,5 +133,16 @@ public class AgencyActivity extends AppCompatActivity {
         emailIntent.putExtra(EXTRA_EMAIL, new String[]{email});
         emailIntent.putExtra(EXTRA_SUBJECT, "I want to have the perfect trip!");
         startActivity(emailIntent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

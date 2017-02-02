@@ -143,8 +143,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_search) {
+            TripFragment fragment = new TripFragment();
+            SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            fragment.setSearchView(search);
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragment_container,fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (id == R.id.home) {
+            fragmentManager.beginTransaction().replace(R.id.fragment_container,new MainFragment()).commit();
         }
 
         return super.onOptionsItemSelected(item);
@@ -167,9 +176,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new TripFragment();
         } else if (id == R.id.nav_exit) {
             exitApplication();
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.erel) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.yonah) {
 
         }
 

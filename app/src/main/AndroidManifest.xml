@@ -13,6 +13,7 @@
         <activity
             android:name=".controller.MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,9 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.AgencyActivity" />
-        <activity android:name=".controller.TripActivity" />
-        <activity android:name=".controller.WebViewActivity"></activity>
+        <activity android:name=".controller.AgencyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".controller.TripActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".controller.WebViewActivity"/>
     </application>
 
 </manifest>

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +36,7 @@ import com.example.erel_yonah.findatrip.model.entities.Agency;
 import com.example.erel_yonah.findatrip.model.entities.Trip;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Random;
 
 import static java.lang.System.exit;
@@ -47,13 +51,11 @@ public class MainActivity extends AppCompatActivity
     private final static String ACTION = "ACTION_UPDATE";
     //private final static String EXTRA = "EXTRA";
 
+
     //private static Integer counter = 0;
     private BroadcastReceiver _refreshReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            /*String text = intent.getExtras().getString(EXTRA);
-            ( (TextView) findViewById( R.id.showBroadcast ) ).setText(counter.toString() + ": " + text);
-            counter++;*/
             updateDB();
         }
     };
@@ -70,7 +72,9 @@ public class MainActivity extends AppCompatActivity
         updateDB();
 
         //start service
-        serviceIntent = activateService();
+        serviceIntent = new Intent("com.TravelAgencies.checkUpdate");
+        serviceIntent = createExplicitFromImplicitIntent(this, serviceIntent);
+        startService(serviceIntent);
 
         //register service
         registerReceiver(_refreshReceiver, new IntentFilter(ACTION));
@@ -99,6 +103,31 @@ public class MainActivity extends AppCompatActivity
         //set the navigation bar
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public static Intent createExplicitFromImplicitIntent(Context context, Intent implicitIntent) {
+        // Retrieve all services that can match the given intent
+        PackageManager pm = context.getPackageManager();
+        List<ResolveInfo> resolveInfo = pm.queryIntentServices(implicitIntent, 0);
+
+        // Make sure only one match was found
+        if (resolveInfo == null || resolveInfo.size() != 1) {
+            return null;
+        }
+
+        // Get component info and create ComponentName
+        ResolveInfo serviceInfo = resolveInfo.get(0);
+        String packageName = serviceInfo.serviceInfo.packageName;
+        String className = serviceInfo.serviceInfo.name;
+        ComponentName component = new ComponentName(packageName, className);
+
+        // Create a new intent. Use the old one for extras and such reuse
+        Intent explicitIntent = new Intent(implicitIntent);
+
+        // Set the component to be explicit
+        explicitIntent.setComponent(component);
+
+        return explicitIntent;
     }
 
     @Override

@@ -84,8 +84,8 @@ public class TripFragment extends Fragment {
         lv.setAdapter(new ExpandableListAdapter(groups, _children));
         lv.setGroupIndicator(null);
 
-        if (lv.getAdapter() instanceof ExpandableListAdapter) {
-            adapter = (ExpandableListAdapter) lv.getAdapter();
+        if (lv.getExpandableListAdapter() instanceof ExpandableListAdapter) {
+            adapter = (ExpandableListAdapter) lv.getExpandableListAdapter();
 
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -95,8 +95,7 @@ public class TripFragment extends Fragment {
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    //adapter.getFilter().filter(newText);
-                    ((ExpandableListAdapter) lv.getAdapter()).filterData(newText);
+                    adapter.getFilter().filter(newText);
                     return false;
                 }
             });
@@ -228,7 +227,11 @@ public class TripFragment extends Fragment {
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
                     if (constraint.length() != 0) {
-                        groups = (String[]) results.values;
+
+                        groups = new String[results.count];
+                        ArrayList<String> arrayGroups = (ArrayList<String>) results.values;
+                        for ( int i = 0; i < results.count; i++) groups[i] = arrayGroups.get(i);
+
                         children = new ArrayList[groups.length];
 
                         int groupIndex = 0;
@@ -236,6 +239,7 @@ public class TripFragment extends Fragment {
                             if(originalChildren[i].get(0).getCountry().equals(groups[groupIndex])) {
                                 children[groupIndex] = originalChildren[i];
                                 groupIndex++;
+                                if (groupIndex == groups.length) break;
                             }
                         }
                     }
@@ -277,40 +281,6 @@ public class TripFragment extends Fragment {
             };
 
             return filter;
-        }
-
-        public void filterData(String query){
-            ArrayList<String> groupList = new ArrayList<>();
-            ArrayList<ArrayList<Trip>> _children = new ArrayList<>();
-
-            query = query.toLowerCase();
-
-            if(query.isEmpty()){
-                for(int i=0; i<originalGroups.length; i++) groupList.add(originalGroups[i]);
-            }
-            else {
-
-                for(int i = 0; i < originalGroups.length; i++){
-
-                    ArrayList<Trip> tripList = originalChildren[i];
-                    ArrayList<Trip> newList = new ArrayList<>();
-                    for(Trip trip: tripList){
-                        if(trip.getCountry().toLowerCase().contains(query)){
-                            newList.add(trip);
-                        }
-                    }
-                    if(newList.size() > 0){
-                        groupList.add(originalGroups[i]);
-                        _children.add(newList);
-                    }
-                }
-            }
-
-            groups = (String[]) groupList.toArray();
-            children = (ArrayList<Trip>[]) _children.toArray();
-
-            notifyDataSetChanged();
-
         }
 
         private class ChildViewHolder {

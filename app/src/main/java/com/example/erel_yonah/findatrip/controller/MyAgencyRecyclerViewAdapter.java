@@ -20,7 +20,6 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Agency} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRecyclerViewAdapter.ViewHolder> implements Filterable {
 
@@ -30,8 +29,10 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
     //the items that are really showed, after filtering
     private ArrayList<Agency> dValues;
 
+    //adapter listener. In this app it'll be the calling fragment listener.
     private final OnListFragmentInteractionListener mListener;
 
+    //public constructor
     public MyAgencyRecyclerViewAdapter(ArrayList<Agency> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
@@ -45,22 +46,21 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
         return new ViewHolder(view);
     }
 
+    //set content to the view holder items
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        //set content of the items
         holder.mItem = dValues.get(position);
         holder.mIdView.setText(Long.toString(holder.mItem.getID()));
         holder.mNameView.setText(holder.mItem.getName());
         holder.mAddressView.setText(holder.mItem.getAddress().getAddress());
         holder.mEmailView.setText(holder.mItem.getEmail());
 
+        //set the on view click listener
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+                if (null != mListener) mListener.onListFragmentInteraction(holder.mItem);
             }
         });
     }
@@ -70,6 +70,7 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
         return dValues.size();
     }
 
+    //a view holder inner class contains all the view grids
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
@@ -78,6 +79,7 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
         public final TextView mEmailView;
         public Agency mItem;
 
+        //public constructor that initialize the view grids from the view
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -111,7 +113,6 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
                 FilterResults results = new FilterResults();
                 ArrayList<Agency> FilteredArray = new ArrayList<Agency>();
 
-                // perform your search here using the searchConstraint String.
 
                 if (constraint == null || constraint.length() == 0) {
                     results.count = mValues.size();

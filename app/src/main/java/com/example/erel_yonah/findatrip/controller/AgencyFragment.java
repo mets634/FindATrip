@@ -32,26 +32,25 @@ import static com.example.erel_yonah.findatrip.R.menu.main;
  */
 public class AgencyFragment extends Fragment {
 
+    //activity's search view
     private SearchView searchView;
 
-    // TODO: Customize parameter argument names
+    //fragment variables
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
+
+    //listener. Usually the calling activity - look in the onAttach function
     private OnListFragmentInteractionListener mListener;
     private MyAgencyRecyclerViewAdapter adapter;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    //default empty constructor. required.
     public AgencyFragment() {
     }
 
+    //search view setter
     public void setSearchView (SearchView sv) {searchView = sv;}
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
+    //create a new instance of the fragment
     public static AgencyFragment newInstance(int columnCount) {
         AgencyFragment fragment = new AgencyFragment();
         Bundle args = new Bundle();
@@ -93,6 +92,7 @@ public class AgencyFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        //setting his context as listener
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
@@ -111,6 +111,7 @@ public class AgencyFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        //setting the activity title
         getActivity().setTitle("Businesses");
 
         //doing a down cast to the view and the adapter of the view to MyAgencyRecyclerViewAdapter and saves it.
@@ -131,7 +132,6 @@ public class AgencyFragment extends Fragment {
                         return false;
                     }
                 });
-
                 searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                     @Override
                     public boolean onClose() {
@@ -143,17 +143,7 @@ public class AgencyFragment extends Fragment {
         }
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    //the interface that the calling activity should implement
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Agency agency);
     }

@@ -44,6 +44,8 @@ public class TripActivity extends AppCompatActivity {
         price = (Integer) intent.getExtras().get("TRIP_PRICE");
         businessId = (long) intent.getExtras().get("TRIP_AGENCY_ID");
 
+        setTitle(country.toUpperCase());
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         countryText = (TextView) findViewById(R.id.country);
@@ -59,7 +61,7 @@ public class TripActivity extends AppCompatActivity {
         startDateText.setText(dateFormat.format(startDate.getTime()));
         endDateText.setText(dateFormat.format(endDate.getTime()));
         descriptionText.setText(description);
-        priceText.setText(price.toString());
+        priceText.setText(price.toString() + " ₪");
         businessID.setText(businessId.toString());
 
         gotoBusiness.setOnClickListener(new View.OnClickListener() {

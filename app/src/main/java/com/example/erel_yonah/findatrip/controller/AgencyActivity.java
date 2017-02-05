@@ -24,6 +24,7 @@ import static android.content.Intent.EXTRA_SUBJECT;
 
 public class AgencyActivity extends AppCompatActivity {
 
+    //agency information
     String name;
     String address;
     String email;
@@ -31,8 +32,10 @@ public class AgencyActivity extends AppCompatActivity {
     String website;
     Long businessId;
 
+    //a final variable for the intent extras
     final String WEB_URL = "website";
 
+    //view items
     TextView emailText;
     TextView websiteText;
     TextView phoneNumberText;
@@ -46,6 +49,7 @@ public class AgencyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agency);
 
+        //get agency details from intent
         Intent intent = getIntent();
         name = (String) intent.getExtras().get("AGENCY_NAME");
         address = (String) intent.getExtras().get("AGENCY_ADDRESS");
@@ -54,8 +58,10 @@ public class AgencyActivity extends AppCompatActivity {
         website = (String) intent.getExtras().get("AGENCY_WEBSITE");
         businessId = (Long) intent.getExtras().get("AGENCY_ID");
 
+        //set activity title
         setTitle(name.toUpperCase());
 
+        //initialize text-views
         emailText = (TextView) findViewById(R.id.email);
         websiteText = (TextView) findViewById(R.id.website);
         phoneNumberText = (TextView) findViewById(R.id.phonenumber);
@@ -64,6 +70,7 @@ public class AgencyActivity extends AppCompatActivity {
         navButton = (FloatingActionButton) findViewById(R.id.navButton);
         businessID = (TextView) findViewById(R.id.id);
 
+        //set text-views text
         emailText.setText(email);
         websiteText.setText(website);
         phoneNumberText.setText(phoneNumber);
@@ -71,6 +78,7 @@ public class AgencyActivity extends AppCompatActivity {
         nameText.setText(name);
         businessID.setText(Long.toString(businessId));
 
+        //set listeners for clicking on the information
         emailText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +110,7 @@ public class AgencyActivity extends AppCompatActivity {
             }
         });
 
+        //set the "back" button in the action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -135,6 +144,7 @@ public class AgencyActivity extends AppCompatActivity {
         startActivity(emailIntent);
     }
 
+    //what happens when clicking on the "back" button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

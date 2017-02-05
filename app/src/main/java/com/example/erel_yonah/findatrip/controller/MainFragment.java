@@ -10,15 +10,10 @@ import com.example.erel_yonah.findatrip.R;
 
 public class MainFragment extends Fragment {
 
+    // Required empty public constructor
     public MainFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment .
-     * @return A new instance of fragment MainFragment.
-     */
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         return fragment;
@@ -39,6 +34,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //set activity title
         getActivity().setTitle("Find Your Trip!");
     }
 }

@@ -96,6 +96,7 @@ public class TripFragment extends Fragment {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     adapter.getFilter().filter(newText);
+                    //adapter.filterData(newText);
                     return false;
                 }
             });
@@ -104,6 +105,7 @@ public class TripFragment extends Fragment {
                 @Override
                 public boolean onClose() {
                     adapter.getFilter().filter(null);
+                    //adapter.filterData("");
                     return false;
                 }
             });
@@ -281,6 +283,42 @@ public class TripFragment extends Fragment {
             };
 
             return filter;
+        }
+
+        public void filterData(String query){
+            ArrayList<String> groupList = new ArrayList<>();
+            ArrayList<ArrayList<Trip>> _children = new ArrayList<>();
+
+            query = query.toLowerCase();
+
+            if(query.isEmpty()){
+                for(int i=0; i<originalGroups.length; i++) groupList.add(originalGroups[i]);
+            }
+            else {
+
+                for(int i = 0; i < originalGroups.length; i++){
+
+                    ArrayList<Trip> tripList = originalChildren[i];
+                    ArrayList<Trip> newList = new ArrayList<>();
+                    for(Trip trip: tripList){
+                        if(trip.getCountry().toLowerCase().startsWith(query) || Long.toString(trip.getAgencyID()).toLowerCase().startsWith(query)){
+                            newList.add(trip);
+                        }
+                    }
+                    if(newList.size() > 0){
+                        groupList.add(originalGroups[i]);
+                        _children.add(newList);
+                    }
+                }
+            }
+
+            groups = new String[groupList.size()];
+            for ( int i = 0; i < groupList.size(); i++) groups[i] = groupList.get(i);
+            children = new ArrayList[_children.size()];
+            for ( int i =0; i < _children.size(); i++) children[i] = _children.get(i);
+
+            notifyDataSetChanged();
+
         }
 
         private class ChildViewHolder {

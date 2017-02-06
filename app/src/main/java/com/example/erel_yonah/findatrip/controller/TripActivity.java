@@ -1,5 +1,6 @@
 package com.example.erel_yonah.findatrip.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -8,11 +9,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.erel_yonah.findatrip.R;
+import com.example.erel_yonah.findatrip.model.backend.DSManagerFactory;
+import com.example.erel_yonah.findatrip.model.entities.Agency;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class TripActivity extends AppCompatActivity {
 
@@ -67,13 +72,36 @@ public class TripActivity extends AppCompatActivity {
         gotoBusiness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:filter agencies by their id
+                openAgency();
             }
         });
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void openAgency() {
+        List<Agency> list = DSManagerFactory.getDSManager("List").getAgencies();
+        Agency tripsAgency = new Agency(0,null,null,null,null,null);
+
+        for(Agency agency: list) {
+            if (agency.getID() == businessId) {
+                tripsAgency = agency;
+                break;
+            }
+        }
+
+        if(tripsAgency.getName()!=null) {
+            Intent intent = new Intent(this, AgencyActivity.class);
+            intent.putExtra("AGENCY_NAME", tripsAgency.getName());
+            intent.putExtra("AGENCY_ADDRESS", tripsAgency.getAddress().getAddress());
+            intent.putExtra("AGENCY_EMAIL", tripsAgency.getEmail());
+            intent.putExtra("AGENCY_PHONENUMBER", tripsAgency.getPhoneNumber());
+            intent.putExtra("AGENCY_WEBSITE", tripsAgency.getWebsite());
+            intent.putExtra("AGENCY_ID", tripsAgency.getID());
+            startActivity(intent);
+        } else Toast.makeText(this, "can't find business", Toast.LENGTH_SHORT).show();
     }
 
     @Override

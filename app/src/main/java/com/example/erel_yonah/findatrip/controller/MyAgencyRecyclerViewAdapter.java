@@ -121,7 +121,7 @@ public class MyAgencyRecyclerViewAdapter extends RecyclerView.Adapter<MyAgencyRe
                     String cs = constraint.toString().toLowerCase();
                     for (int i = 0; i < mValues.size(); i++) {
                         Agency tmp = mValues.get(i);
-                        if (tmp.getName().toLowerCase().startsWith(cs))  {
+                        if (tmp.getName().toLowerCase().startsWith(cs) || Long.toString(tmp.getID()).startsWith(cs))  {
                             FilteredArray.add(tmp);
                         }
                     }
